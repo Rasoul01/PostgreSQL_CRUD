@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>فرم ارسال دانشجویان دکتری</title>
+    <style>
+        body {
+            font-family: 'Tahoma', sans-serif;
+            direction: rtl;
+            background-color: #f5f5f5;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 50px auto;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            padding: 20px;
+        }
+        .header {
+            background-color: #FF7900;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #FF7900;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 15px;
+        }
+        .form-row label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-row input[type="text"],
+        .form-row input[type="date"],
+        .form-row input[type="tel"],
+        .form-row select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .form-row input[type="radio"],
+        .form-row input[type="checkbox"] {
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .form-row .checkbox-group {
+            display: flex;
+            align-items: center;
+        }
+        .form-row .checkbox-group label {
+            margin-right: 10px;
+        }
+        .add-btn {
+            background-color: #FF7900;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+            display: block;
+            text-align: center;
+        }
+        .add-btn:hover {
+            background-color: #b85600;
+        }
+        .remove-author,
+        .remove-article {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 12px;
+        }
+        .remove-author:hover,
+        .remove-article:hover {
+            background-color: #e53935;
+        }
+        .article {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+        .author-table {
+            margin-top: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #FF7900;
+            color: white;
+            font-weight: bold;
+        }
+        td input[type="text"] {
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        td input[type="radio"] {
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+        .radio-label {
+            display: inline-block;
+            margin-right: 10px;
+        }
+        .error {
+            border-color: red;
+        }
+    </style>
+</head>
+<body>
+
+    <form action="/submit_edition" method="POST" class="container">
+        <div class="header">
+            <h1>فرم ارسال دانشجویان دکتری</h1>
+        </div>
+
+        <div class="section">
+            <p>فرم اعلام وضعیت مقطع کارشناسی ارشد برای متقاضیان ورودی در مقطع بالاتر طبق آیین نامه پذیرش بدون آزمون استعدادهای درخشان در مقطع دکتری</p>
+        </div>
+
+        <div class="section">
+            <div class="section-title">
+                <h2>مشخصات فردی</h2>
+            </div>
+            <div class="form-row">
+                <div>
+                    <label for="first_name">نام</label>
+                    <input type="text" id="first_name" name="first_name" value="{{ first_name }}" required>
+                </div>
+                <div>
+                    <label for="last_name">نام خانوادگی</label>
+                    <input type="text" id="last_name" name="last_name" value="{{ last_name }}" required>
+                </div>
+                <div>
+                    <label for="gender">جنسیت</label>
+                    <select id="gender" name="gender" required>
+                        <option value="male" {% if gender == 'male' %}selected{% endif %}>مرد</option>
+                        <option value="female" {% if gender == 'female' %}selected{% endif %}>زن</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <label for="birth_date">تاریخ تولد</label>
+                    <input type="date" id="birth_date" name="birth_date" value="{{ birth_date }}" required>
+                </div>
+                <div>
+                    <label for="national_id">کد ملی</label>
+                    <input type="text" id="national_id" name="national_id" value="{{ national_id }}" required readonly>
+                </div>
+                <div>
+                    <label for="father_name">نام پدر</label>
+                    <input type="text" id="father_name" name="father_name" value="{{ father_name }}" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <label for="id_number">شماره شناسنامه</label>
+                    <input type="text" id="id_number" name="id_number" value="{{ id_number }}" required>
+                </div>
+                <div>
+                    <label for="serial_number">شماره سریال شناسنامه</label>
+                    <input type="text" id="serial_number" name="serial_number" value="{{ serial_number }}" required>
+                </div>
+                <div>
+                    <label for="phone_number">شماره تماس</label>
+                    <input type="tel" id="phone_number" name="phone_number" value="{{ phone_number }}" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><h2>مشخصات تحصیلی</h2></div>
+            <div class="form-row">
+                <div>
+                    <label for="master_field">رشته تحصیلی</label>
+                    <input type="text" id="master_field" name="master_field" value="{{ master_field }}" required>
+                </div>
+                <div>
+                    <label for="master_university">دانشگاه محل تحصیل</label>
+                    <input type="text" id="master_university" name="master_university" value="{{ master_university }}" required>
+                </div>
+                <div>
+                    <label for="master_type">نوع دوره</label>
+                    <select id="master_type" name="master_type" required>
+                        <option value="funded" {% if master_type == 'funded' %}selected{% endif %}>روزانه</option>
+                        <option value="no_fund" {% if master_type == 'no_fund' %}selected{% endif %}>شبانه</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <label for="start_date">تاریخ ورود به تحصیل</label>
+                    <input type="date" id="start_date" name="start_date" value="{{ start_date }}" required>
+                </div>
+                <div>
+                    <label for="graduation_date">تاریخ فارغ التحصیلی</label>
+                    <input type="date" id="graduation_date" name="graduation_date" value="{{ graduation_date }}" required>
+                </div>
+                <div>
+                    <label for="graduation_status">وضعیت فارغ التحصیلی</label>
+                    <select id="graduation_status" name="graduation_status" required>
+                        <option value="graduated" {% if graduation_status == 'graduated' %}selected{% endif %}>فارغ التحصیل</option>
+                        <option value="last_semester_student" {% if graduation_status == 'last_semester_student' %}selected{% endif %}>دانشجوی ترم آخر</option>
+                        <option value="pro_phd" {% if graduation_status == 'pro_phd' %}selected{% endif %}>فارغ التحصیل دکترای حرفه‌ای</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <label for="semester_count">تعداد ترم های فارغ التحصیلی</label>
+                    <input type="text" id="semester_count" name="semester_count" value="{{ semester_count }}" required>
+                </div>
+                <div>
+                    <label for="score_wout_thesis">معدل بدون احتساب نمره پایان نامه</label>
+                    <input type="text" id="score_wout_thesis" name="score_wout_thesis" value="{{ score_wout_thesis }}" required>
+                </div>
+                <div>
+                    <label for="score_with_thesis">معدل با احتساب نمره پایان نامه</label>
+                    <input type="text" id="score_with_thesis" name="score_with_thesis" value="{{ score_with_thesis }}" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <label for="thesis_score">نمره پایان نامه</label>
+                    <input type="text" id="thesis_score" name="thesis_score" value="{{ thesis_score }}" required>
+                </div>
+                <div>
+                    <label for="score_normalized">معدل با احتساب نمره همترازی</label>
+                    <input type="text" id="score_normalized" name="score_normalized" value="{{ score_normalized }}" required>
+                </div>
+                <div>
+                    <label for="applied_field">رشته مورد تقاضا</label>
+                    <input type="text" id="applied_field" name="applied_field" value="{{ applied_field }}" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><h2>مدرک زبان</h2></div>
+            <div class="form-row">
+                <div>
+                    <label for="english_degree_type">نوع مدرک زبان</label>
+                    <input type="text" id="english_degree_type" name="english_degree_type" value="{{ english_degree_type }}" required>
+                </div>
+                <div>
+                    <label for="english_degree_score">نمره مدرک زبان</label>
+                    <input type="text" id="english_degree_score" name="english_degree_score" value="{{ english_degree_score }}" required>
+                </div>
+                <div>
+                    <label for="english_degree_education_date">تاریخ اخذ</label>
+                    <input type="date" id="english_degree_education_date" name="english_degree_education_date" value="{{ english_degree_education_date }}" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div>
+                    <label for="english_degree_validation_date">تاریخ اعتبار</label>
+                    <input type="date" id="english_degree_validation_date" name="english_degree_validation_date" value="{{ english_degree_validation_date }}" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title"><h2>مستندات پژوهشی</h2></div>
+            <table id="articles-table">
+                <thead>
+                    <tr>
+                        <th>عنوان مقاله</th>
+                        <th>آیا مقاله مستخرج از پایان نامه است؟</th>
+                        <th>ISSN</th>
+                        <th>نام کامل مجله</th>
+                        <th>نام اختصاری</th>
+                        <th>نوع مقاله</th>
+                        <th>نویسنده</th>
+                    </tr>
+                </thead>
+                <tbody id="articles-container">
+                    <tr class="article-entry">
+                        <td>
+                            <input type="text" name="article_title" value="{{ article_title }}" required>
+                        </td>
+                        <td>
+                            <label class="radio-label"><input type="radio" name="extracted_from_thesis" value="yes" {% if extracted_from_thesis == 'yes' %}checked{% endif %} required> بله</label>
+                            <label class="radio-label"><input type="radio" name="extracted_from_thesis" value="no" {% if extracted_from_thesis == 'no' %}checked{% endif %} required> خیر</label>
+                        </td>
+                        <td>
+                            <input type="text" name="issn" value="{{ issn }}" required>
+                        </td>
+                        <td>
+                            <input type="text" name="magazine_full_name" value="{{ magazine_full_name }}" required>
+                        </td>
+                        <td>
+                            <input type="text" name="magazine_short_name" value="{{ magazine_short_name }}" required>
+                        </td>
+                        <td>
+                            <label class="radio-label"><input type="radio" name="article_type" value="ISC" {% if article_type == 'ISC' %}checked{% endif %} required> ISC</label>
+                            <label class="radio-label"><input type="radio" name="article_type" value="scientific" {% if article_type == 'scientific' %}checked{% endif %} required> علمی - پژوهشی</label>
+                            <label class="radio-label"><input type="radio" name="article_type" value="ISI" {% if article_type == 'ISI' %}checked{% endif %} required> ISI</label>
+                            <label class="radio-label"><input type="radio" name="article_type" value="non_scientific" {% if article_type == 'non_scientific' %}checked{% endif %} required> غیر علمی پژوهشی</label>
+                        </td>
+                        <td>
+                            <input type="text" name="author_name" value="{{ author_name }}" placeholder="نام نویسنده" required>
+                            <br>
+                            <label class="radio-label"><input type="radio" name="author_title" value="student" {% if author_title == 'student' %}checked{% endif %} required> دانشجو</label>
+                            <label class="radio-label"><input type="radio" name="author_title" value="professor" {% if author_title == 'professor' %}checked{% endif %} required> عضو هیأت علمی</label>
+                            <label class="radio-label"><input type="radio" name="author_title" value="etc" {% if author_title == 'etc' %}checked{% endif %} required> سایر</label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div>
+            <input type="submit" value="ثبت تغییرات" class="add-btn">
+        </div>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelector('form').addEventListener('submit', function (e) {
+                var form = e.target;
+                var isValid = true;
+                var fields = form.querySelectorAll('input[required], select[required], textarea[required]');
+
+                fields.forEach(function (field) {
+                    if (!field.value.trim()) {
+                        isValid = false;
+                        field.classList.add('error');
+                    } else {
+                        field.classList.remove('error');
+                    }
+                });
+
+                var radioGroups = form.querySelectorAll('input[type="radio"][required]');
+                radioGroups.forEach(function (radioGroup) {
+                    var groupName = radioGroup.name;
+                    var checked = form.querySelector('input[name="' + groupName + '"]:checked');
+                    if (!checked) {
+                        isValid = false;
+                        form.querySelector('input[name="' + groupName + '"]').classList.add('error');
+                    } else {
+                        form.querySelectorAll('input[name="' + groupName + '"]').forEach(function (radio) {
+                            radio.classList.remove('error');
+                        });
+                    }
+                });
+
+                if (!isValid) {
+                    e.preventDefault(); // جلوگیری از ارسال فرم
+                    alert('لطفاً تمامی فیلدهای لازم را پر کنید.');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
